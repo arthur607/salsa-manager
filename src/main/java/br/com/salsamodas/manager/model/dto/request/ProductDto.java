@@ -1,4 +1,4 @@
-package br.com.salsamodas.manager.model.dto;
+package br.com.salsamodas.manager.model.dto.request;
 
 import lombok.Getter;
 

@@ -1,7 +1,6 @@
 package br.com.salsamodas.manager.model;
 
-import br.com.salsamodas.manager.model.dto.ProductDto;
-import lombok.AllArgsConstructor;
+import br.com.salsamodas.manager.model.dto.request.ProductDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;

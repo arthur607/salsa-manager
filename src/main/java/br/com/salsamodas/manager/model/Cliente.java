@@ -1,12 +1,10 @@
 package br.com.salsamodas.manager.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
 @AllArgsConstructor
-@NoArgsConstructor
+@Getter
 public class Cliente {
 
     private String cep;

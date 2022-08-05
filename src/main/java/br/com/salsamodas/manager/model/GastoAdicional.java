@@ -10,6 +10,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class GastoAdicional {
 
-    private final Map<String, BigDecimal> gastoAdicional = new HashMap<>();
+    private final Map<String, BigDecimal> gastoAdicional = new HashMap<>(5);
 
 }

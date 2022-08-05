@@ -1,6 +1,6 @@
 package br.com.salsamodas.manager.model;
 
-import br.com.salsamodas.manager.model.dto.EntradaDto;
+import br.com.salsamodas.manager.model.dto.request.EntradaDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
