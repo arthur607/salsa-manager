@@ -1,34 +1,34 @@
 package br.com.salsamodas.manager.api;
 
-import br.com.salsamodas.manager.model.*;
-import org.springframework.data.mongodb.core.MongoOperations;
+import br.com.salsamodas.manager.model.Product;
+import br.com.salsamodas.manager.model.Saida;
+import br.com.salsamodas.manager.model.dto.EntradaDto;
+import br.com.salsamodas.manager.service.EntradaService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("product")
+@Slf4j
 public class ProductController {
 
-    private final MongoOperations operations;
+    private final EntradaService entradaService;
 
-    public ProductController(MongoOperations operations) {
-        this.operations = operations;
+    @Autowired
+    public ProductController(EntradaService entradaService) {
+        this.entradaService = entradaService;
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Void> addProduct(Entrada entrada){
-        var p = List.of(new Product(1,"rosa",new Fornecedor("Neha"),new Category("VESTIDO"
-        ,new SubCategory("MARJORIE")),new BigDecimal("100.0")));
-        var e = new Entrada(p, LocalDateTime.now());
-        operations.save(e);
-        e.getProducts().forEach(operations::save);
+    public ResponseEntity<Void> addProduct(@RequestBody EntradaDto entrada){
+
+            entradaService.process(entrada);
+         log.info("Operação realizado com sucesso!");
         return ResponseEntity.ok().build();
     }
 
