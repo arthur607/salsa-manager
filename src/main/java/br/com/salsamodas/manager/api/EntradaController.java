@@ -1,12 +1,10 @@
 package br.com.salsamodas.manager.api;
 
-import br.com.salsamodas.manager.model.Saida;
 import br.com.salsamodas.manager.model.dto.request.EntradaDto;
 import br.com.salsamodas.manager.service.EntradaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,12 +27,6 @@ public class EntradaController {
 
         service.process(entrada);
         log.info("Operação realizado com sucesso!");
-        return ResponseEntity.ok().build();
-    }
-
-    @PatchMapping("sell")
-    public ResponseEntity<Void> sellProduct(Saida saida) {
-
         return ResponseEntity.ok().build();
     }
 }

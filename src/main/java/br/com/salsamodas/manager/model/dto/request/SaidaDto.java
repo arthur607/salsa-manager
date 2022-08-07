@@ -24,7 +24,7 @@ public class SaidaDto {
 
     private Cliente cliente;
 
-    private String Status;
+    private String status;
 
     @JsonProperty("additional_info")
     private final Map<String, String> additionalInfo = new HashMap<>(5);
