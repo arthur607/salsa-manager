@@ -22,7 +22,7 @@ public class EntradaService {
     public void process(final EntradaDto entrada) {
         validateDate(entrada);
         final var e = new Entrada(entrada);
-        saveProducts(e.getProducts());
+        saveProducts(e.getProducts(), e);
         repository.save(e);
     }
 
@@ -33,7 +33,10 @@ public class EntradaService {
     }
 
     @Async
-    private void saveProducts(final List<Product> p) {
-        p.forEach(repository::save);
+    private void saveProducts(final List<Product> p, final Entrada e) {
+        p.forEach(product -> {
+            product.getOperacoes().add(e);
+            repository.save(product);
+        });
     }
 }

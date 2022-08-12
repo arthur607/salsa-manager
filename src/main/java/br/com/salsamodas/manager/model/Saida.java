@@ -1,21 +1,25 @@
 package br.com.salsamodas.manager.model;
 
 import br.com.salsamodas.manager.model.dto.request.SaidaDto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Data
 @AllArgsConstructor
 @Document(collection = "baixas")
 @NoArgsConstructor
-public class Saida {
+@Getter
+@Setter
+public class Saida extends OperationModel {
+
+    @MongoId
+    private String id = UUID.randomUUID().toString();
     private List<Product> products;
 
     private LocalDateTime dataSaida;

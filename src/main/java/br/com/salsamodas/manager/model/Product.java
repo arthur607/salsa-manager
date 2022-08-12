@@ -3,9 +3,12 @@ package br.com.salsamodas.manager.model;
 import br.com.salsamodas.manager.model.dto.request.ProductDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Document(collection = "product")
@@ -19,6 +22,9 @@ public class Product {
     private BigDecimal unitPrice;
 
     private boolean vendido = false;
+
+    @DBRef(lazy = true)
+    private Set<OperationModel> operacoes = new HashSet<>(3);
 
     public Product(int externalId, String color, Fornecedor fornecedor, Category category, BigDecimal unitPrice) {
         this.externalId = externalId;
