@@ -11,35 +11,23 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Document(collection = "baixas")
-@NoArgsConstructor
 @Getter
 @Setter
 public class Saida extends OperationModel {
-
-    @MongoId
-    private String id = UUID.randomUUID().toString();
-    private List<Product> products;
-
-    private LocalDateTime dataSaida;
-
-    private int quantity;
 
     private BigDecimal totalValue;
 
     private Cliente cliente;
 
     public Saida(SaidaDto s) {
-        this.products = s.getProducts().stream().map(Product::new).collect(Collectors.toUnmodifiableList());
-        this.dataSaida = s.getDataSaida();
-        this.quantity = products.size();
+        super(s.getProducts().stream().map(Product::new).collect(Collectors.toUnmodifiableList()),s.getDataSaida());
         totalValue = totalProductsValue();
     }
 
     private BigDecimal totalProductsValue() {
         var v = new BigDecimal(0);
-        for (Product p : this.products) {
+        for (Product p : super.getProducts()) {
             v = v.add(p.getUnitPrice());
         }
         return v;
