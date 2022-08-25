@@ -10,10 +10,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -25,29 +27,30 @@ public class SaidaService {
         this.repository = repository;
     }
 
-
+    @Transactional
     public void process(final SaidaDto saida) {
         final var p = saida.getProducts();
         final var dbProducts = new LinkedList<Product>();
         p.forEach(e -> {
             final var q = new Query();
             final var dbProduct = findProductInDb(e, q);
-            if (Objects.equals(dbProduct, null)) {
-                throw new RuntimeException("Produto selecionado não foi encontrado!" + e.getExternalId());
-            }
             if (dbProduct.isVendido()) {
                 throw new RuntimeException("Produto já foi vendido:"+ dbProduct);
             }
             dbProduct.setVendido(true);
+            final var s = new Saida(saida);
+            dbProduct.getOperacoes().add(s);
             dbProducts.add(dbProduct);
-            repository.updateFirst(q, Update.update("vendido", true), Product.class);
+            verifyDate(saida);
+
+            s.setProducts(dbProducts);
+            repository.save(s);
+            final var update = new Update();
+            update.push("operacoes",s).set("vendido",true);
+            repository.updateFirst(q, update, Product.class);
         });
         log.info("Documentos encontrados: " + dbProducts.size());
-        verifyDate(saida);
 
-        final var s = new Saida(saida);
-        s.setProducts(dbProducts);
-        repository.save(s);
     }
 
     private void verifyDate(SaidaDto saida) {
@@ -58,6 +61,7 @@ public class SaidaService {
 
     private Product findProductInDb(final ProductDto e, final Query q) {
         q.addCriteria(Criteria.where("externalId").is(e.getExternalId()));
-        return repository.findOne(q, Product.class);
+        return Optional.ofNullable(repository.findOne(q, Product.class)).orElseThrow(()
+                -> new RuntimeException("Produto selecionado não foi encontrado!" + e.getExternalId()));
     }
 }
