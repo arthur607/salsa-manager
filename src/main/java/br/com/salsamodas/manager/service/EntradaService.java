@@ -33,7 +33,7 @@ public class EntradaService {
     }
 
     @Async
-    private void saveProducts(final List<Product> p) {
+    void saveProducts(final List<Product> p) {
         p.forEach(repository::save);
     }
 }
